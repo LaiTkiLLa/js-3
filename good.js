@@ -57,15 +57,29 @@ const jeans = new Good(5, "Джинсы", "цвет: синие, серые", ["
 
 const catalog = new GoodsList(/Джинсы/i, true, false);
 
+sandals.setAvaible(false)
+
 catalog.add(tshirt);
 catalog.add(coats);
 catalog.add(showcases);
 catalog.add(sandals);
 catalog.add(jeans);
 
-console.log(catalog.list)
 
-class BasketGood {
+catalog.sortPrice = true;
+catalog.sortDir = false;
+
+// console.log(catalog.list)
+
+class BasketGood extends Good {
+
+    constructor(id, name, description, sizes, price, available, amount) {
+        super(id, name, description, sizes, price, available);
+        this.amount = amount;
+    }
+}
+
+class Basket {
 
     constructor() {
         this.goods = []
@@ -105,8 +119,32 @@ class BasketGood {
     }
 
     removeUnavailable() {
-        this.goods.filter(item => item.available === false).forEach(value => this.remove(value));
+
+        this.goods.filter(item => {if (item.available === false){
+            const index = this.goods.indexOf(item)
+            return this.goods.splice(index,1)
+        }});
     }
 
 }
+
+const basket = new Basket();
+
+basket.add(tshirt,3)
+basket.add(coats,1)
+basket.add(showcases,1)
+basket.add(sandals,2)
+basket.add(jeans,3)
+console.log(basket.goods)
+
+basket.remove(jeans,2)
+basket.removeUnavailable()
+console.log(basket.goods)
+
+
+console.log(basket.totalSum)
+console.log(basket.totalAmount)
+//
+// basket.clear()
+// console.log(basket.goods)
 
